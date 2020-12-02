@@ -81,3 +81,37 @@ SELECT name
   FROM world
  WHERE capital LIKE concat(name, ' City');
 
+ --13
+
+ SELECT capital, name
+  FROM world
+  WHERE INSTR(capital, name) > 0;
+
+--14
+
+SELECT capital, name
+  FROM world
+  WHERE INSTR(capital, name) > 0
+  AND LENGTH(capital) != LENGTH(name);
+
+--15
+
+SELECT name, REPLACE(capital, name, '') as 'ext'
+  FROM world
+  WHERE LENGTH(capital) - LENGTH(name) > 0
+  AND INSTR(capital, name) > 0;
+
+--SELECT FROM world
+
+--1
+
+SELECT name, continent, population FROM world;
+
+--2
+
+SELECT name FROM world WHERE population >= 200000000;
+
+--3
+
+SELECT name, (gdp / population) AS 'per capita GDP'
+FROM world WHERE population >= 200000000;
