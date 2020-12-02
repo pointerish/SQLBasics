@@ -183,3 +183,53 @@ AND INSTR(name, 'i') > 0
 AND INSTR(name, 'o') > 0
 AND INSTR(name, 'u') > 0
 AND name NOT LIKE '% %';
+
+--SELECT from Nobel
+
+--1
+
+SELECT yr, subject, winner
+  FROM nobel
+ WHERE yr = 1950;
+
+ --2
+
+ SELECT winner
+  FROM nobel
+ WHERE yr = 1962
+   AND subject = 'Literature'
+
+--3
+
+SELECT yr, subject
+FROM nobel
+WHERE winner = 'Albert Einstein';
+
+--4
+
+SELECT winner
+FROM nobel
+WHERE yr >= 2000
+AND subject = 'Peace';
+
+--5
+
+SELECT yr, subject, winner
+FROM nobel
+WHERE subject = 'Literature'
+AND yr >= 1980 AND yr <= 1989;
+
+--6
+
+SELECT yr, subject, winner
+FROM nobel
+WHERE winner = 'Theodore Roosevelt'
+OR winner = 'Woodrow Wilson'
+OR winner = 'Jimmy Carter'
+OR winner = 'Barack Obama';
+
+--7
+
+SELECT winner
+FROM nobel
+WHERE winner LIKE 'John%';
