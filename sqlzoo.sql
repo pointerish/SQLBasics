@@ -340,3 +340,24 @@ SELECT continent, name, area FROM world x
     (SELECT area FROM world y
         WHERE y.continent=x.continent
           AND area>0)
+
+--8
+
+SELECT continent, name
+  FROM world x
+  WHERE name <= ALL
+  (SELECT name FROM world y WHERE y.continent = x.continent)
+
+--9
+
+SELECT name, continent, population
+  FROM world x
+  WHERE 25000000  > ALL
+  (SELECT population FROM world y WHERE x.continent = y.continent AND y.population > 0)
+
+--10
+
+SELECT name, continent
+  FROM world x
+  WHERE population > ALL
+  (SELECT population*3 FROM world y WHERE x.continent = y.continent AND population > 0 AND y.name <> x.name)
