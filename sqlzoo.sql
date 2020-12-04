@@ -662,30 +662,85 @@ WHEN dept.id = 3 THEN 'Art'
 ELSE 'None' END
 FROM teacher LEFT JOIN dept ON (dept.id=teacher.dept)
 
---Window Function
+--SELF JOIN
 
 --1
-
-SELECT lastName, party, votes
-  FROM ge
- WHERE constituency = 'S14000024' AND yr = 2017
-ORDER BY votes DESC;
+SELECT COUNT(name)
+FROM stops;
 
 --2
 
-SELECT party, votes,
-       RANK() OVER (ORDER BY votes DESC) as posn
-  FROM ge
- WHERE constituency = 'S14000024' AND yr = 2017
-ORDER BY party;
+SELECT id
+FROM stops
+WHERE name='Craiglockhart';
 
 --3
 
-SELECT yr,party, votes,
-      RANK() OVER (PARTITION BY yr ORDER BY votes DESC) as posn
-  FROM ge
- WHERE constituency = 'S14000021'
-ORDER BY party,yr
+SELECT stops.id, stops.name
+FROM route
+JOIN stops ON (route.stop=stops.id)
+WHERE route.num=4
+AND route.company='LRT';
 
 --4
 
+SELECT company, num, COUNT(*)
+FROM route
+WHERE stop IN (149, 53)
+GROUP BY company, num
+HAVING COUNT(*)=2;
+
+--5
+
+SELECT a.company, a.num, a.stop, b.stop
+FROM route AS a
+JOIN route AS b
+ON (a.company = b.company)
+AND (a.num = b.num)
+WHERE a.stop = 53
+AND b.stop = 149;
+
+--6
+
+SELECT a.company, a.num, n.name, nn.name
+FROM route AS a
+JOIN route AS b
+ON (a.company, a.num)=(b.company, b.num)
+JOIN stops AS n
+ON a.stop=n.id
+JOIN stops AS nn
+ON b.stop=nn.id
+WHERE n.name='Craiglockhart'
+AND nn.name='London Road';
+
+--7
+
+SELECT DISTINCT a.company, b.num
+FROM route AS a
+JOIN route AS b
+ON (a.company, a.num)=(b.company, b.num)
+WHERE a.stop=115
+AND b.stop=137;
+
+--8
+
+SELECT a.company, b.num
+FROM route AS a
+JOIN route AS b
+ON (a.company, a.num)=(b.company, b.num)
+JOIN stops AS n
+ON a.stop = n.id
+JOIN stops AS nn
+ON b.stop = n.id
+WHERE n.name = 'Craiglockhart'
+AND nn.name = 'Tollcross';
+
+
+--9
+
+SELECT stopa.name, a.company, a.num
+FROM route a
+  JOIN route b ON (a.num=b.num AND a.company=b.company)
+  JOIN stops stopa ON (a.stop=stopa.id)
+  JOIN stops stopb ON (b.stop=stopb.id)
+WHERE stopb.name = 'Craiglockhart'
